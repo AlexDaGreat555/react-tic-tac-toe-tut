@@ -122,11 +122,15 @@ function Board({xIsNext, squares, onPlay}) {
 }
 
 function Square({value, onSquareClick}) {
+  const style = {
+    color: value === "X" ? "blue" : value === "O" ? "red" : "black",
+  };
   return (
   <button 
     className="square"
     // Uses onSquareClick prop to handle click events
     onClick = {onSquareClick}
+    style = {style}
   > 
     {value}
   </button>
