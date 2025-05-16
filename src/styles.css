@@ -90,3 +90,9 @@ body {
 .game-info {
   margin-left: 20px;
 }
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
