@@ -1,0 +1,7 @@
+# React-related
+node_modules/
+build/
+dist/
+.cache/
+*.log
+.env
