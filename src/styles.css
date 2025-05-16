@@ -3,6 +3,7 @@
 }
 
 body {
+  display: flexbox;
   font-family: sans-serif;
   margin: 20px;
   padding: 0;
@@ -69,6 +70,7 @@ body {
   padding: 0;
   text-align: center;
   width: 34px;
+  color: blue;
 }
 
 .board-row:after {
