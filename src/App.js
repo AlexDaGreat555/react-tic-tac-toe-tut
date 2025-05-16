@@ -1,16 +1,25 @@
 import { useState } from "react";
 
 function Board() {
+  const [xIsNext, setXIsNext] = useState(true);
   const [squares, setSquares] = useState(Array(9).fill(null));
 
   // Function to handle square click
   function handleClick(i) {
-    // Make a copy of the squares array
+    // Check if the square is already filled
+    if (squares[i]) {
+      return;
+    }
     const newSquares = squares.slice();
     // Update the clicked square with "X"
-    newSquares[i] = "X";
+    if (xIsNext) {
+      newSquares[i] = "X";
+    } else {
+      newSquares[i] = "O";
+    }
     // Update the state with the new squares array
     setSquares(newSquares);
+    setXIsNext(!xIsNext); // Toggle the next player
   }
 
   return (
@@ -38,6 +47,7 @@ function Square({value, onSquareClick}) {
   return (
   <button 
     className="square"
+    // Uses onSquareClick prop to handle click events
     onClick = {onSquareClick}
   > 
     {value}
