@@ -1,13 +1,63 @@
 import { useState } from "react";
 
-function Board() {
-  const [xIsNext, setXIsNext] = useState(true);
-  const [squares, setSquares] = useState(Array(9).fill(null));
+function Game() {
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [currentMove, setCurrentMove] = useState(0);
+  const currentSquares = history[currentMove];
+  const xIsNext = currentMove % 2 === 0;
+
+
+  function handlePlay(nextSquares) {
+    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+    setHistory(nextHistory);
+    setCurrentMove(nextHistory.length - 1);
+  }
+
+  function jumpTo(nextMove) {
+    setCurrentMove(nextMove);
+    // Update the history to only include moves up to the current move
+    // setHistory(history.slice(0, nextMove + 1));
+  }
+
+  // Creates list of buttons for each move in the game history
+  // Squares param represents the state of the game
+  // Move param represents the index of the move in the history
+  const moves = history.map((squares, move) => {
+    let description;
+    if (move > 0) {
+      description = "Go to move #" + move;
+    } else {
+      description = "Go to game start";
+    }
+    return (
+      <li key = {move}>
+        <button onClick={() => jumpTo(move)}>{description}</button>
+      </li>
+    )});
+
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board xIsNext= {xIsNext} squares = {currentSquares} onPlay= {handlePlay} />
+      </div>
+      <div className="game-info">
+       <h1>History</h1>
+        <ol>{moves}</ol>
+      </div>
+    </div>
+  );
+}
+
+function Board({xIsNext, squares, onPlay}) {
+  // const [squares, setSquares] = useState(Array(9).fill(null));
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
     status = "Winner: " + winner;
-  } else {
+  } else if (squares.every((square) => square)) {
+    status = "Draw!";
+  }
+  else {
     status = "Next player: " + (xIsNext ? "X" : "O");
   }
 
@@ -46,8 +96,7 @@ function Board() {
       newSquares[i] = "O";
     }
     // Update the state with the new squares array
-    setSquares(newSquares);
-    setXIsNext(!xIsNext); // Toggle the next player
+    onPlay(newSquares);
   }
 
   return (
@@ -84,4 +133,4 @@ function Square({value, onSquareClick}) {
   );
 }
 
-export default Board;
+export default Game;
